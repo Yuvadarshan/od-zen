@@ -14,7 +14,149 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      attendance: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          is_present: boolean
+          marked_at: string | null
+          od_request_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          is_present?: boolean
+          marked_at?: string | null
+          od_request_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          is_present?: boolean
+          marked_at?: string | null
+          od_request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_od_request_id_fkey"
+            columns: ["od_request_id"]
+            isOneToOne: false
+            referencedRelation: "od_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      od_requests: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          attachment_url: string | null
+          created_at: string
+          event_name: string | null
+          id: string
+          od_date: string | null
+          od_type: string
+          period: string | null
+          rejection_reason: string | null
+          status: string
+          student_id: string
+          timings: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attachment_url?: string | null
+          created_at?: string
+          event_name?: string | null
+          id?: string
+          od_date?: string | null
+          od_type: string
+          period?: string | null
+          rejection_reason?: string | null
+          status?: string
+          student_id: string
+          timings?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          attachment_url?: string | null
+          created_at?: string
+          event_name?: string | null
+          id?: string
+          od_date?: string | null
+          od_type?: string
+          period?: string | null
+          rejection_reason?: string | null
+          status?: string
+          student_id?: string
+          timings?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "od_requests_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "od_requests_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          department: string | null
+          email: string
+          id: string
+          name: string
+          register_number: string | null
+          role: string
+          section: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          department?: string | null
+          email: string
+          id?: string
+          name: string
+          register_number?: string | null
+          role: string
+          section?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          department?: string | null
+          email?: string
+          id?: string
+          name?: string
+          register_number?: string | null
+          role?: string
+          section?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
