@@ -225,6 +225,6 @@ export default function Students() {
           ))}
         </div>
       )}
-    </DashboardPageWrapper>
+    </div>
   );
 }

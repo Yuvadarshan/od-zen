@@ -333,6 +333,6 @@ export default function PendingRequests() {
           ))}
         </div>
       )}
-    </DashboardPageWrapper>
+    </div>
   );
 }

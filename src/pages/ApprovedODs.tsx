@@ -222,6 +222,6 @@ export default function ApprovedODs() {
           })}
         </div>
       )}
-    </DashboardPageWrapper>
+    </div>
   );
 }
