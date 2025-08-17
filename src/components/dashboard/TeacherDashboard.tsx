@@ -233,7 +233,7 @@ const TeacherDashboard = () => {
                       <div className="flex-1">
                         <h4 className="font-medium">{request.title}</h4>
                         <p className="text-sm text-muted-foreground">
-                          {request.profiles.name} • {request.profiles.register_number} • {request.profiles.department}-{request.profiles.section}
+                          {request.profiles?.name || 'Unknown'} • {request.profiles?.register_number || 'N/A'} • {request.profiles?.department || 'N/A'}-{request.profiles?.section || 'N/A'}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {request.od_type === 'daily' ? 'Daily OD' : 'Event OD'} • 
