@@ -28,8 +28,8 @@ const Index = () => {
       <header className="bg-background/80 backdrop-blur-sm border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <BookOpen className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold text-primary">OD Zen</h1>
+            <img src="src/assets/logo.png" alt="logo" width="100" height="50" />
+            <h1 className="text-2xl font-bold text-primary">CIT OD Tracker</h1>
           </div>
           <Button onClick={() => navigate('/auth')}>
             Sign In
@@ -41,8 +41,8 @@ const Index = () => {
       <section className="container mx-auto px-4 py-20 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl font-bold text-foreground mb-6">
-            On-Duty Management
-            <span className="text-primary"> Made Simple</span>
+            On-Duty Tracker
+            <span className="text-primary"> - CIT(CSE)</span>
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Streamline your college's on-duty process with our comprehensive management system. 
@@ -120,7 +120,7 @@ const Index = () => {
             Ready to Get Started?
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Join hundreds of students and teachers already using OD Zen
+            Click Sign-Up!
           </p>
           <Button size="lg" onClick={() => navigate('/auth')}>
             Sign Up Now
@@ -131,7 +131,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="bg-background border-t py-8">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; 2024 OD Zen. All rights reserved.</p>
+          <p>&copy; 2025 CIT-CHENNAI. All rights reserved.</p>
         </div>
       </footer>
     </div>

@@ -195,7 +195,7 @@ const TeacherDashboard = () => {
             </Button>
             <Button 
               variant="outline" 
-              onClick={() => navigate('/dashboard/approved-ods')} 
+              onClick={() => navigate('src/pages/ApprovedODs')}
               className="w-full justify-start"
             >
               <CheckSquare className="mr-2 h-4 w-4" />
@@ -264,7 +264,7 @@ const TeacherDashboard = () => {
                       <Button 
                         size="sm" 
                         variant="ghost"
-                        onClick={() => navigate(`/dashboard/request/${request.id}`)}
+                        onClick={() => navigate('/dashboard/request/${request.id}')}
                       >
                         View Details
                       </Button>
