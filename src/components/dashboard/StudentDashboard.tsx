@@ -36,7 +36,7 @@ const StudentDashboard = () => {
       const { data, error } = await supabase
         .from('od_requests')
         .select('*')
-        .eq('student_id', profile?.user_id)
+        .eq('student_id', (profile?.data as any)?.user_id)
         .order('created_at', { ascending: false })
         .limit(5);
 
@@ -71,9 +71,9 @@ const StudentDashboard = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Welcome back, {profile?.name}!</h1>
+        <h1 className="text-3xl font-bold text-foreground">Welcome back, {(profile?.data as any)?.name}!</h1>
         <p className="text-muted-foreground">
-          {profile?.register_number} • {profile?.department} - Section {profile?.section}
+          {(profile?.data as any)?.register_number} • {(profile?.data as any)?.department} - Section {(profile?.data as any)?.section}
         </p>
       </div>
 

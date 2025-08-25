@@ -21,7 +21,7 @@ interface ODRequest {
   status: string;
   attachment_url?: string;
   created_at: string;
-  profiles: {
+  students: {
     name: string;
     email: string;
     register_number?: string;
@@ -47,7 +47,7 @@ export default function PendingRequests() {
         .from('od_requests')
         .select(`
           *,
-          profiles!od_requests_student_id_fkey (
+          students!od_requests_student_id_fkey (
             name,
             email,
             register_number,
@@ -212,18 +212,18 @@ export default function PendingRequests() {
                   <div>
                     <span className="text-sm font-medium">Student: </span>
                     <span className="text-sm text-muted-foreground">
-                      {request.profiles.name}
+                      {request.students.name}
                     </span>
-                    {request.profiles.register_number && (
+                    {request.students.register_number && (
                       <span className="text-sm text-muted-foreground ml-2">
-                        ({request.profiles.register_number})
+                        ({request.students.register_number})
                       </span>
                     )}
                   </div>
                   <div>
                     <span className="text-sm font-medium">Department: </span>
                     <span className="text-sm text-muted-foreground">
-                      {request.profiles.department} - {request.profiles.section}
+                      {request.students.department} - {request.students.section}
                     </span>
                   </div>
                 </div>

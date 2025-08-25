@@ -18,7 +18,7 @@ interface ODRequest {
   event_name?: string;
   status: string;
   created_at: string;
-  profiles: {
+  students: {
     name: string;
     register_number: string;
     department: string;
@@ -50,7 +50,7 @@ const TeacherDashboard = () => {
         .from('od_requests')
         .select(`
           *,
-          profiles!od_requests_student_id_fkey (
+          students!od_requests_student_id_fkey (
             name,
             register_number,
             department,
@@ -72,9 +72,8 @@ const TeacherDashboard = () => {
       if (statsError) throw statsError;
 
       const { data: studentsCount, error: studentsError } = await supabase
-        .from('profiles')
-        .select('id', { count: 'exact' })
-        .eq('role', 'student');
+        .from('students')
+        .select('id', { count: 'exact' });
 
       if (studentsError) throw studentsError;
 
@@ -105,7 +104,7 @@ const TeacherDashboard = () => {
         .from('od_requests')
         .update({
           status: action,
-          approved_by: profile?.user_id,
+          approved_by: (profile?.data as any)?.user_id,
           approved_at: new Date().toISOString()
         })
         .eq('id', requestId);
@@ -130,7 +129,7 @@ const TeacherDashboard = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Welcome, {profile?.name}!</h1>
+        <h1 className="text-3xl font-bold text-foreground">Welcome, {(profile?.data as any)?.name}!</h1>
         <p className="text-muted-foreground">Teacher Dashboard - Manage student OD requests</p>
       </div>
 
@@ -233,7 +232,7 @@ const TeacherDashboard = () => {
                       <div className="flex-1">
                         <h4 className="font-medium">{request.title}</h4>
                         <p className="text-sm text-muted-foreground">
-                          {request.profiles?.name || 'Unknown'} • {request.profiles?.register_number || 'N/A'} • {request.profiles?.department || 'N/A'}-{request.profiles?.section || 'N/A'}
+                          {request.students?.name || 'Unknown'} • {request.students?.register_number || 'N/A'} • {request.students?.department || 'N/A'}-{request.students?.section || 'N/A'}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {request.od_type === 'daily' ? 'Daily OD' : 'Event OD'} • 

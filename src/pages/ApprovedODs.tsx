@@ -17,7 +17,7 @@ interface ApprovedOD {
   period?: string;
   attachment_url?: string;
   approved_at: string;
-  profiles: {
+  students: {
     name: string;
     email: string;
     register_number?: string;
@@ -44,7 +44,7 @@ export default function ApprovedODs() {
         .from('od_requests')
         .select(`
           *,
-          profiles!od_requests_student_id_fkey (
+          students!od_requests_student_id_fkey (
             name,
             email,
             register_number,
@@ -155,10 +155,10 @@ export default function ApprovedODs() {
                     <div className="flex items-center gap-2">
                       <User className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">
-                        {od.profiles.name}
-                        {od.profiles.register_number && (
+                        {od.students.name}
+                        {od.students.register_number && (
                           <span className="text-muted-foreground ml-2">
-                            ({od.profiles.register_number})
+                            ({od.students.register_number})
                           </span>
                         )}
                       </span>
@@ -166,7 +166,7 @@ export default function ApprovedODs() {
                     <div>
                       <span className="text-sm font-medium">Department: </span>
                       <span className="text-sm text-muted-foreground">
-                        {od.profiles.department} - {od.profiles.section}
+                        {od.students.department} - {od.students.section}
                       </span>
                     </div>
                   </div>

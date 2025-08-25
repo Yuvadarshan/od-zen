@@ -37,9 +37,8 @@ export default function Students() {
     try {
       // Fetch students with their OD request counts
       const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('role', 'student');
+        .from('students')
+        .select('*');
 
       if (profilesError) {
         console.error('Error fetching students:', profilesError);

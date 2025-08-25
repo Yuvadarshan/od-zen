@@ -27,9 +27,9 @@ export function DashboardHeader() {
           <h2 className="text-lg font-semibold">
             {profile?.role === 'student' ? 'Student Dashboard' : 'Teacher Dashboard'}
           </h2>
-          {profile?.role === 'student' && profile.department && (
+          {profile?.role === 'student' && (profile.data as any)?.department && (
             <p className="text-sm text-muted-foreground">
-              {profile.department} - Section {profile.section}
+              {(profile.data as any).department} - Section {(profile.data as any).section}
             </p>
           )}
         </div>
@@ -39,9 +39,9 @@ export function DashboardHeader() {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
             <Avatar className="h-8 w-8">
-              <AvatarImage src="" alt={profile?.name} />
+              <AvatarImage src="" alt={(profile?.data as any)?.name} />
               <AvatarFallback>
-                {profile?.name?.split(' ').map(n => n[0]).join('').toUpperCase()}
+                {(profile?.data as any)?.name?.split(' ').map((n: string) => n[0]).join('').toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </Button>
@@ -49,13 +49,13 @@ export function DashboardHeader() {
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{profile?.name}</p>
+              <p className="text-sm font-medium leading-none">{(profile?.data as any)?.name}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {profile?.email}
+                {(profile?.data as any)?.email}
               </p>
-              {profile?.role === 'student' && profile.register_number && (
+              {profile?.role === 'student' && (profile.data as any)?.register_number && (
                 <p className="text-xs leading-none text-muted-foreground">
-                  Reg: {profile.register_number}
+                  Reg: {(profile.data as any).register_number}
                 </p>
               )}
             </div>

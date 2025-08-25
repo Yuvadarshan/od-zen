@@ -2,15 +2,28 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
-interface Profile {
+interface StudentProfile {
   id: string;
   user_id: string;
   name: string;
   email: string;
-  role: string;
   register_number?: string;
   department?: string;
   section?: string;
+}
+
+interface TeacherProfile {
+  id: string;
+  user_id: string;
+  name: string;
+  email: string;
+  department?: string;
+  designation?: string;
+}
+
+interface Profile {
+  role: 'student' | 'teacher';
+  data: StudentProfile | TeacherProfile;
 }
 
 interface AuthContextType {
@@ -45,18 +58,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchProfile = async (userId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
+      // Try to fetch from students table first
+      const { data: studentData, error: studentError } = await supabase
+        .from('students')
         .select('*')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
-      if (error) {
-        console.error('Error fetching profile:', error);
+      if (studentData) {
+        setProfile({
+          role: 'student',
+          data: studentData
+        });
         return;
       }
 
-      setProfile(data);
+      // If not a student, try teachers table
+      const { data: teacherData, error: teacherError } = await supabase
+        .from('teachers')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (teacherData) {
+        setProfile({
+          role: 'teacher',
+          data: teacherData
+        });
+        return;
+      }
+
+      if (studentError && teacherError) {
+        console.error('Error fetching profile:', { studentError, teacherError });
+      }
     } catch (error) {
       console.error('Error in fetchProfile:', error);
     }
