@@ -48,21 +48,30 @@ const TeacherDashboard = () => {
       // Fetch pending requests with student details
       const { data: pending, error: pendingError } = await supabase
         .from('od_requests')
-        .select(`
-          *,
-          students!od_requests_student_id_fkey (
-            name,
-            register_number,
-            department,
-            section
-          )
-        `)
+        .select('*')
         .eq('status', 'pending')
         .order('created_at', { ascending: false })
         .limit(5);
 
       if (pendingError) throw pendingError;
-      setPendingRequests(pending || []);
+
+      // Fetch student details for each request
+      const requestsWithStudents = await Promise.all(
+        (pending || []).map(async (request) => {
+          const { data: student } = await supabase
+            .from('students')
+            .select('name, register_number, department, section')
+            .eq('user_id', request.student_id)
+            .single();
+
+          return {
+            ...request,
+            students: student || { name: 'Unknown', register_number: '', department: '', section: '' }
+          };
+        })
+      );
+
+      setPendingRequests(requestsWithStudents);
 
       // Fetch statistics
       const { data: allRequests, error: statsError } = await supabase

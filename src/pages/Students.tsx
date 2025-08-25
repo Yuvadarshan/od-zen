@@ -36,7 +36,7 @@ export default function Students() {
   const fetchStudents = async () => {
     try {
       // Fetch students with their OD request counts
-      const { data: profiles, error: profilesError } = await supabase
+      const { data: studentProfiles, error: profilesError } = await supabase
         .from('students')
         .select('*');
 
@@ -47,7 +47,7 @@ export default function Students() {
 
       // Get OD request counts for each student
       const studentsWithCounts = await Promise.all(
-        (profiles || []).map(async (student) => {
+        (studentProfiles || []).map(async (student) => {
           const { data: allRequests } = await supabase
             .from('od_requests')
             .select('id, status')

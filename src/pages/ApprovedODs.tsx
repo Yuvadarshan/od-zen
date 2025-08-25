@@ -40,17 +40,10 @@ export default function ApprovedODs() {
 
   const fetchApprovedODs = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: approvedRequests, error } = await supabase
         .from('od_requests')
         .select(`
           *,
-          students!od_requests_student_id_fkey (
-            name,
-            email,
-            register_number,
-            department,
-            section
-          ),
           attendance (
             date,
             is_present
@@ -64,7 +57,23 @@ export default function ApprovedODs() {
         return;
       }
 
-      setApprovedODs(data || []);
+      // Fetch student details for each request
+      const requestsWithStudents = await Promise.all(
+        (approvedRequests || []).map(async (request) => {
+          const { data: student } = await supabase
+            .from('students')
+            .select('name, email, register_number, department, section')
+            .eq('user_id', request.student_id)
+            .single();
+
+          return {
+            ...request,
+            students: student || { name: 'Unknown', email: '', register_number: '', department: '', section: '' }
+          };
+        })
+      );
+
+      setApprovedODs(requestsWithStudents);
     } catch (error) {
       console.error('Error:', error);
     } finally {

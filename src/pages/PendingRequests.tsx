@@ -43,18 +43,9 @@ export default function PendingRequests() {
 
   const fetchPendingRequests = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: requests, error } = await supabase
         .from('od_requests')
-        .select(`
-          *,
-          students!od_requests_student_id_fkey (
-            name,
-            email,
-            register_number,
-            department,
-            section
-          )
-        `)
+        .select('*')
         .eq('status', 'pending')
         .order('created_at', { ascending: true });
 
@@ -63,7 +54,23 @@ export default function PendingRequests() {
         return;
       }
 
-      setRequests(data || []);
+      // Fetch student details for each request
+      const requestsWithStudents = await Promise.all(
+        (requests || []).map(async (request) => {
+          const { data: student } = await supabase
+            .from('students')
+            .select('name, email, register_number, department, section')
+            .eq('user_id', request.student_id)
+            .single();
+
+          return {
+            ...request,
+            students: student || { name: 'Unknown', email: '', register_number: '', department: '', section: '' }
+          };
+        })
+      );
+
+      setRequests(requestsWithStudents);
     } catch (error) {
       console.error('Error:', error);
     } finally {
