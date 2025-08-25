@@ -101,24 +101,9 @@ export type Database = {
           title?: string
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "od_requests_approved_by_fkey"
-            columns: ["approved_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "od_requests_student_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["user_id"]
-          },
-        ]
+        Relationships: []
       }
-      profiles: {
+      students: {
         Row: {
           created_at: string
           department: string | null
@@ -126,7 +111,6 @@ export type Database = {
           id: string
           name: string
           register_number: string | null
-          role: string
           section: string | null
           updated_at: string
           user_id: string
@@ -134,11 +118,10 @@ export type Database = {
         Insert: {
           created_at?: string
           department?: string | null
-          email: string
+          email?: string
           id?: string
-          name: string
+          name?: string
           register_number?: string | null
-          role: string
           section?: string | null
           updated_at?: string
           user_id: string
@@ -149,37 +132,6 @@ export type Database = {
           email?: string
           id?: string
           name?: string
-          register_number?: string | null
-          role?: string
-          section?: string | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      students: {
-        Row: {
-          created_at: string
-          department: string | null
-          id: string
-          register_number: string | null
-          section: string | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          department?: string | null
-          id?: string
-          register_number?: string | null
-          section?: string | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          department?: string | null
-          id?: string
           register_number?: string | null
           section?: string | null
           updated_at?: string
@@ -192,7 +144,9 @@ export type Database = {
           created_at: string
           department: string | null
           designation: string | null
+          email: string
           id: string
+          name: string
           updated_at: string
           user_id: string
         }
@@ -200,7 +154,9 @@ export type Database = {
           created_at?: string
           department?: string | null
           designation?: string | null
+          email?: string
           id?: string
+          name?: string
           updated_at?: string
           user_id: string
         }
@@ -208,7 +164,9 @@ export type Database = {
           created_at?: string
           department?: string | null
           designation?: string | null
+          email?: string
           id?: string
+          name?: string
           updated_at?: string
           user_id?: string
         }
@@ -219,7 +177,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_student: {
+        Args: { user_uuid: string }
+        Returns: boolean
+      }
+      is_teacher: {
+        Args: { user_uuid: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
