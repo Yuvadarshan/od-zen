@@ -60,11 +60,15 @@ const TeacherDashboard = () => {
       // Fetch student details for each request
       const requestsWithStudents = await Promise.all(
         (pending || []).map(async (request) => {
-          const { data: student } = await supabase
+          const { data: student, error: studentError } = await supabase
             .from('students')
             .select('name, register_number, department, section')
             .eq('user_id', request.student_id)
-            .single();
+            .maybeSingle();
+
+          if (studentError) {
+            console.error('Error fetching student:', studentError);
+          }
 
           return {
             ...request,
