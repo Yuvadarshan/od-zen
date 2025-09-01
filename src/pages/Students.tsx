@@ -121,7 +121,8 @@ export default function Students() {
   }
 
   return (
-    <div className="container mx-auto py-6">
+    <DashboardPageWrapper>
+      <div className="container mx-auto py-6">
       <div className="mb-6">
         <h1 className="text-2xl font-bold">Students</h1>
         <p className="text-muted-foreground">View and manage student information</p>
@@ -224,6 +225,7 @@ export default function Students() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </DashboardPageWrapper>
   );
 }

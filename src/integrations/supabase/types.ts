@@ -49,6 +49,42 @@ export type Database = {
           },
         ]
       }
+      events: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          event_date: string
+          id: string
+          location: string | null
+          od_type: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          event_date: string
+          id?: string
+          location?: string | null
+          od_type: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          event_date?: string
+          id?: string
+          location?: string | null
+          od_type?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       od_requests: {
         Row: {
           approved_at: string | null

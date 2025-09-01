@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { FileText, Users, CheckSquare, Clock, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { AttendanceCalendar } from "@/components/teacher/AttendanceCalendar";
+import { EventCreateDialog } from "@/components/teacher/EventCreateDialog";
 
 interface ODRequest {
   id: string;
@@ -217,6 +219,7 @@ const TeacherDashboard = () => {
               <Users className="mr-2 h-4 w-4" />
               Student Directory
             </Button>
+            <EventCreateDialog onEventCreated={fetchData} />
           </CardContent>
         </Card>
 
@@ -284,6 +287,9 @@ const TeacherDashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Attendance Calendar */}
+      <AttendanceCalendar />
     </div>
   );
 };

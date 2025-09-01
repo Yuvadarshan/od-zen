@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -35,6 +35,7 @@ export function ODRequestForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
+  const [events, setEvents] = useState<Array<{id: string, title: string, event_date: string}>>([]);
 
   const form = useForm<ODRequestFormData>({
     resolver: zodResolver(odRequestSchema),
@@ -46,6 +47,24 @@ export function ODRequestForm() {
       period: "",
     },
   });
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('events')
+        .select('id, title, event_date')
+        .order('event_date', { ascending: true });
+
+      if (error) throw error;
+      setEvents(data || []);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -194,9 +213,30 @@ export function ODRequestForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Event Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Name of the event or activity" {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select an event or enter custom" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {events.map((event) => (
+                        <SelectItem key={event.id} value={event.title}>
+                          {event.title} - {format(new Date(event.event_date), 'MMM dd, yyyy')}
+                        </SelectItem>
+                      ))}
+                      <SelectItem value="custom">Custom Event</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {field.value === "custom" && (
+                    <FormControl>
+                      <Input 
+                        placeholder="Enter custom event name" 
+                        onChange={(e) => field.onChange(e.target.value)}
+                        className="mt-2"
+                      />
+                    </FormControl>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
